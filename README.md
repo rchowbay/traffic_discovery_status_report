@@ -1,5 +1,5 @@
-# custom_sva_scan_results_report
-Custom SVA Scan Results Report shows all software vulnerabilities for each server included in the provided HALO group scope. the script exports results into external CSV file format.
+# traffic_discovery_status_report
+Traffic Discovery Status Report retrieves and filters status of traffic discovery for all HALO groups. the script exports results into external CSV file format.
 
 ## Requirements:
 - CloudPassage Halo API key (with Auditor privileges).
@@ -22,13 +22,13 @@ Custom SVA Scan Results Report shows all software vulnerabilities for each serve
 | HALO_API_VERSION | HALO EndPoint Version | v1 |
 | OUTPUT_DIRECTORY | Location for generated CSV file | /tmp |
 | HALO_GROUP_ID | Halo Group ID | 0962\*\*\*\*013\*\*\*ec22\*\*\* |
+| FILTER_TD_STATUS_VALUE | Traffic Discovery Status value (True, False, None, Any) to filter results | Any |
 
 ## How the scripts works:
 - Checking and validation of the provided configuration parameters and fails in case of missing any required parameter.
 - Use HALO API key id/secret to generate access token to be used to access Protected HALO API resources.
-- Retrieving the list of servers that belongs the provided HALO group/groups.
-- For every server retrieved from the previous call, the script retrieves list of all results (vulnerable software packages and non-vulnerable packages) detected by the most recent vulnerability scan on that server.
-- For each vulnerable package, all of its known vulnerabilities (CVEs) are listed also.
+- Retrieving the list of HALO Groups.
+- For every every group retrieved from the previous call, the script retrieves the traffic discovery status.
 - Formating and exporting all retreived Report data of into CSV file format and save it in the provided output directory.
 
 ## How to run the tool (stand-alone):
