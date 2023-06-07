@@ -7,6 +7,7 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from halo import halo_api_caller
 from halo import config_helper
+from halo import csv_operations
 
 list_of_groups = []
 
@@ -44,8 +45,37 @@ def get_group_td_status_test(group_id):
     group_td_status = halo_api_caller_obj.get_group_td_status(group_id)
     print(group_td_status[0]['scanner_settings']['td_auto_scan'])
 
+def combine_csv_files_test(output_directory, table_header):
+    csv_operations_obj = csv_operations.CSVOperations()
+    csv_operations_obj.combine_csv_files(output_directory, table_header)
+
+def create_sub_directory_test(output_directory):
+    csv_operations_obj = csv_operations.CSVOperations()
+    csv_operations_obj.create_sub_directory(output_directory)
+
+def remove_csv_file_test(file_name):
+    csv_operations_obj = csv_operations.CSVOperations()
+    csv_operations_obj.remove_csv_file(file_name)
+
+def add_file_statistics_test(output_directory, file_name, current_time, filter):
+    csv_operations_obj = csv_operations.CSVOperations()
+    csv_operations_obj.add_file_statistics(output_directory, file_name, current_time, filter)
+
+def row_counter_test(output_directory, file_name):
+    csv_operations_obj = csv_operations.CSVOperations()
+    total_rows, td_enabled_status_rows, td_disabled_status_rows, td_not_set_status_rows = csv_operations_obj.row_counter(output_directory, file_name)
+    print("Total Rows = %s" % total_rows)
+    print("TD Status Enabled Rows = %s" % td_enabled_status_rows)
+    print("TD Status Disabled Rows = %s" % td_disabled_status_rows)
+    print("TD Status Not-Set Rows = %s" % td_not_set_status_rows)
 
 if __name__ == "__main__":
-    get_all_groups_test()
-    get_group_childs_test("67b04036a8c411e9a8b62930f061b45d", False)
-    get_group_td_status_test("67b04036a8c411e9a8b62930f061b45d")
+    # get_all_groups_test()
+    # get_group_childs_test("67b04036a8c411e9a8b62930f061b45d", False)
+    # get_group_td_status_test("67b04036a8c411e9a8b62930f061b45d")
+    output_directory = r'C:\Users\ThomasMillerFidelis\tmp\td_status_report_2023-06-07T05-44-22-196946'
+    # table_header_columns = ['HALO Group ID', 'HALO Group Name', 'TD Status']
+    # combine_csv_files_test(output_directory, table_header_columns)
+    # create_sub_directory_test(output_directory)
+    file_name = 'Test.csv'
+    row_counter_test(output_directory, file_name)
