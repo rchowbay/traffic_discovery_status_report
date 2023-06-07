@@ -19,8 +19,6 @@ class HaloAPICaller(object):
         self.halo_api_key_secret = config.halo_api_key_secret
         self.halo_api_auth_token = config.halo_api_auth_token
         self.output_directory = config.output_directory
-        self.halo_group_id = config.halo_group_id
-        self.halo_group_td_status = config.halo_group_td_status
 
     # Dump debug info
     @classmethod
@@ -146,7 +144,7 @@ class HaloAPICaller(object):
             return json.loads(data), auth_error
         else:
             return None, auth_error
-    
+
     def get_group_details(self, group_id):
         url = "%s:%d/v2/groups/%s" % (
             self.halo_api_hostname, self.halo_api_port, group_id)
@@ -166,7 +164,7 @@ class HaloAPICaller(object):
             return None, auth_error
 
     def get_group_childs_per_page(self, group_id, page):
-        url = "%s:%d/%s/groups?parent_id=%s&per_page=100&page=%s" % (
+        url = "%s:%d/%s/groups?parent_id=%s&page=%s&per_page=1000" % (
             self.halo_api_hostname, self.halo_api_port, self.halo_api_version, group_id, page)
         (data, auth_error) = self.do_get_request(url, self.halo_api_auth_token)
         if data:

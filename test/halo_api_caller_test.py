@@ -73,9 +73,9 @@ if __name__ == "__main__":
     # get_all_groups_test()
     # get_group_childs_test("67b04036a8c411e9a8b62930f061b45d", False)
     # get_group_td_status_test("67b04036a8c411e9a8b62930f061b45d")
-    output_directory = r'C:\Users\ThomasMillerFidelis\tmp\td_status_report_2023-06-07T05-44-22-196946'
+    output_directory = r'C:\Users\tmiller\tmp_output_dir\td_status_report_2023-06-07T12-37-28-006755'
     # table_header_columns = ['HALO Group ID', 'HALO Group Name', 'TD Status']
     # combine_csv_files_test(output_directory, table_header_columns)
     # create_sub_directory_test(output_directory)
-    file_name = 'Test.csv'
+    file_name = 'halo_groups_td_status_report_2023-06-07T12-56-11.971615.csv'
     row_counter_test(output_directory, file_name)
