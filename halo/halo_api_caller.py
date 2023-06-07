@@ -157,7 +157,7 @@ class HaloAPICaller(object):
             return None, auth_error
 
     def get_all_groups_per_page(self, page):
-        url = "%s:%d/%s/groups&per_page=100&page=%s" % (
+        url = "%s:%d/%s/groups?page=%s&per_page=1000" % (
             self.halo_api_hostname, self.halo_api_port, self.halo_api_version, page)
         (data, auth_error) = self.do_get_request(url, self.halo_api_auth_token)
         if data:
