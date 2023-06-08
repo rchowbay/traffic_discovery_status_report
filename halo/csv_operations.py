@@ -50,13 +50,12 @@ class CSVOperations(object):
             for thread_file in threads_files:
                 with open(output_directory+"/"+thread_file, 'r') as input_csvfile:
                     reader = csv.reader(input_csvfile)
-                    for _ in range(7):
-                        next(reader)
+                    next(reader)
                     for row in reader:
                         writer.writerow(row)
                 self.remove_csv_file(output_directory+"/"+thread_file)
         self.add_file_statistics(
-            output_directory, file_name, current_time, td_status_filter, halo_group_id)
+            output_directory, file_name, current_time, td_status_filter, halo_group_id, table_header)
 
     def remove_csv_file(self, filename):
         # Remove threads CSV files
@@ -77,31 +76,36 @@ class CSVOperations(object):
             os.mkdir(absolute_sub_directory_path)
         return absolute_sub_directory_path
 
-    def add_file_statistics(self, output_directory, file_name, current_time, td_status_filter, halo_group_id):
+    def add_file_statistics(self, output_directory, file_name, current_time, td_status_filter, halo_group_id, table_header):
         # Add some overall statistics into the CSV file
         with open(output_directory + "/" + file_name, 'r') as readFile:
             reader = csv.reader(readFile)
             rows = []
             if td_status_filter == 'ENABLED':
+                rows.append(table_header)
                 for row in reader:
                     if row[2] == 'True':
                         rows.append(row)
                 td_disabled_status_rows = 0
                 td_not_set_status_rows = 0
-                total_rows = len(rows)
-                td_enabled_status_rows = len(rows)
+                total_rows = len(rows)-1  # in order no to count header
+                # in order no to count header
+                td_enabled_status_rows = len(rows)-1
             elif td_status_filter == 'DISABLED':
+                rows.append(table_header)
                 for row in reader:
                     if row[2] == 'False':
                         rows.append(row)
                 td_enabled_status_rows = 0
                 td_not_set_status_rows = 0
-                total_rows = len(rows)
-                td_disabled_status_rows = len(rows)
+                total_rows = len(rows)-1  # in order no to count header
+                # in order no to count header
+                td_disabled_status_rows = len(rows)-1
             else:
                 rows = list(reader)
                 total_rows, td_enabled_status_rows, td_disabled_status_rows, td_not_set_status_rows = self.row_counter(
                     output_directory, file_name)
+
             rows.insert(0, ["# ------------------------------- #"])
             rows.insert(1, ["# Report Name: %s" % (file_name)])
             rows.insert(2, ["# Report Generated at: %s" % (current_time)])

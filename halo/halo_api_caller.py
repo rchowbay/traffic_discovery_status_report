@@ -81,9 +81,6 @@ class HaloAPICaller(object):
                 Utility.log_stderr("Unknown error fetching '%s'" % url)
             return None
 
-    def get_event_batch(self, url):
-        return self.do_get_request(url, self.halo_api_auth_token)
-
     def do_get_request(self, url, token):
         req = urllib.request.Request(url)
         req.add_header("Authorization", "Bearer " + token)
