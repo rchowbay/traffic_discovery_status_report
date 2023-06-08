@@ -66,7 +66,7 @@ To run the script follow the below steps.
     docker run -it \
     -e HALO_API_KEY=$HALO_API_KEY \
     -e HALO_API_SECRET_KEY=$HALO_API_SECRET_KEY \
-    -e HALO_GROUP_ID=$HALO_GROUP_ID \
+    -e HALO_API_HOSTNAME=$HALO_API_HOSTNAME \
     -v $OUTPUT_DIRECTORY:/tmp \
     traffic_discovery_status_report
 ```
