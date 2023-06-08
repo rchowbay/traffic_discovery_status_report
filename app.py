@@ -39,7 +39,7 @@ class App(object):
 
     def main(self):
         self.td_status_filter = input(
-            "Enter Required TD Status 'ENABLED / DISABLED / ALL (Default)': ") or "ALL"
+            "Enter Traffic Discovery (TD) Status 'ENABLED / DISABLED / ALL (Default)': ") or "ALL"
         self.halo_group_id = input("Enter Group ID 'ALL (Default)': ") or "ALL"
 
         self.util.log_stdout(
@@ -50,11 +50,11 @@ class App(object):
         self.initialize_common_objects()
 
         self.util.log_stdout(
-            " Retreiving HALO groups' IDs of the specified HALO account ")
+            " Retreiving HALO groups' IDs from the provided HALO account ")
         self.get_groups()
 
         self.util.log_stdout(
-            " Operation Completed, Check Generated CSV File! ")
+            " Operation Completed, Check the generated report CSV File! ")
         script_end_time = time.time()
         consumed_time = script_end_time - self.script_start_time
         optimized_consumed_time = round(consumed_time, 3)
@@ -71,7 +71,7 @@ class App(object):
             # add +1 for the parent group id
             groups_list_count = groups_list_object[0]['count']+1
 
-        print(" =============== Total Number of Groups= %s" % groups_list_count)
+        self.util.log_stdout(" Total Number of Groups= %s" % groups_list_count)
         if (groups_list_count > 0):
             self.absolute_sub_directory_path = self.csv_operations_obj.create_sub_directory(
                 self.output_directory)
@@ -143,17 +143,6 @@ class App(object):
                     group['id'], thread_file_absolute_path, thread_file_name, thread_current_time, thread_file_row_counter)
                 thread_file_row_counter += 1
 
-        self.util.log_stdout(
-            " Adding Total Number of Rows into the CSV file of thread No. [%s]" % current_page)
-        with open(thread_file_absolute_path, 'r') as readFile:
-            reader = csv.reader(readFile)
-            lines = list(reader)
-            lines.insert(4, ["# Total Number of Rows = %s" %
-                             (thread_file_row_counter)])
-        with open(thread_file_absolute_path, 'w', newline='') as writeFile:
-            writer = csv.writer(writeFile)
-            writer.writerows(lines)
-
     def get_group_traffic_discovery_status(self, group_id, thread_file_absolute_path, thread_file_name, thread_current_time, thread_file_row_counter):
         self.util.log_stdout(
             " Retrieving Traffic Discovery Status for Group [%s] " % group_id)
@@ -170,23 +159,13 @@ class App(object):
         with open(thread_file_absolute_path, 'a', newline='') as f:
             writer = csv.writer(f)
             if thread_file_row_counter == 0:
-                writer.writerow(
-                    ["# ------------------------------- #"])
-                writer.writerow(
-                    ["# Report Name: %s" % (thread_file_name)])
-                writer.writerow(
-                    ["# Report Generated at: %s" % (thread_current_time)])
-                writer.writerow(
-                    ["# Results Filtered by Group TD Status = [%s] and Group ID = [%s]" % (self.td_status_filter, self.halo_group_id)])
-                writer.writerow(
-                    ["# ------------------------------- #"])
                 writer.writerow(self.table_header)
                 writer.writerow(table_row)
                 self.util.log_stdout(
-                    " Writing Row Number: [%s] into the CSV file " % thread_file_row_counter)
+                    " Writing Group ID: [%s], Group Name: [%s], TD Status: [%s] into the thread CSV file. " % (group_id, group_name,  group_td_status))
             else:
                 self.util.log_stdout(
-                    " Writing Row Number: [%s] into the CSV file " % thread_file_row_counter)
+                    " Writing Group ID: [%s], Group Name: [%s], TD Status: [%s] into the thread CSV file. " % (group_id, group_name,  group_td_status))
                 writer.writerow(table_row)
 
     def check_configs(self, config, halo_api_caller, util):
