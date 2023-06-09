@@ -20,10 +20,18 @@ class ConfigHelper(object):
     """
 
     def __init__(self):
+        # For CS-Test Account Test
         self.halo_api_key_id = os.getenv("HALO_API_KEY", "HARDSTOP")
         self.halo_api_key_secret = os.getenv("HALO_API_SECRET_KEY", "HARDSTOP")
-        self.halo_api_hostname = os.getenv(
-            "HALO_API_HOSTNAME", "https://api.cloudpassage.com")
+        self.halo_api_hostname = os.getenv("HALO_API_HOSTNAME", "https://api.cloudpassage.com")
+        
+        # For PINE Account Test
+        """
+        self.halo_api_key_id = os.getenv("PINE_HALO_API_KEY", "HARDSTOP")
+        self.halo_api_key_secret = os.getenv("PINE_HALO_API_SECRET_KEY", "HARDSTOP")
+        self.halo_api_hostname = os.getenv("PINE_HALO_API_HOSTNAME", "https://portal-pine.ds9.cloudpassage.com")
+        """
+
         self.halo_api_port = os.getenv("HALO_API_PORT", "443")
         self.halo_api_version = os.getenv("HALO_API_VERSION", "v1")
         self.halo_api_auth_url = "oauth/access_token"

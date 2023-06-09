@@ -4,6 +4,7 @@ import time
 import csv
 import concurrent.futures
 import threading
+import multiprocessing
 from unicodedata import name
 from halo import config_helper
 from halo import halo_api_caller
@@ -77,6 +78,22 @@ class App(object):
                 self.output_directory)
             groups_pages = math.ceil(groups_list_count/1000)
 
+            jobs = []
+            for i in range(groups_pages):
+                current_page = i+1
+                self.util.log_stdout(
+                    " Preparing/Creating Empty Partial CSV File to store results of thread/process No. [%s]" % current_page)
+                thread_file_absolute_path, thread_file_name, thread_current_time = self.csv_operations_obj.prepare_thread_csv_file(
+                    self.absolute_sub_directory_path, current_page)
+                p = multiprocessing.Process(target=self.get_all_groups_per_page, args=(
+                    current_page, thread_file_absolute_path, thread_file_name, thread_current_time, ))
+                jobs.append(p)
+                p.start()
+
+            for job in jobs:
+                job.join()
+
+            """
             threads = []
             for i in range(groups_pages):
                 current_page = i+1
@@ -91,6 +108,7 @@ class App(object):
 
             for thread in threads:
                 thread.join()
+            """
 
             """
             with concurrent.futures.ThreadPoolExecutor(groups_pages) as executor:
